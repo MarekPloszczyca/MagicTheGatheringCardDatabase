@@ -1,2 +1,2 @@
-# MarvelSnapCardDatabase
-Database of all cards available in Marvel Snap game..
+# Magic: The Gathering Database
+Database of cards available in Magic: The Gathering game.
