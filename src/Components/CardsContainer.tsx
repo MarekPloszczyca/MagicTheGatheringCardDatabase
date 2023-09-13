@@ -17,21 +17,21 @@ export default function CardsContainer(props: ComponentProps) {
   const [page, setPage] = useState(1);
   const [classification, setClassification] = useState(false);
   const [url, setUrl] = useState(
-    "https://api.magicthegathering.io/v1/cards?pageSize=50&contains=imageUrl&page=1"
+    new URL(
+      "https://api.magicthegathering.io/v1/cards?pageSize=50&contains=imageUrl&page=1"
+    )
   );
   const firstLoad = useRef(true);
 
-  console.log(url)
-
   const modifedUrlHandler = useCallback(
     (name: string, type: string | number) => {
-      if (url.includes(name)) {
-        const regex = new RegExp(`(?=&${name})(.*)(?=&|$)`);
-        setUrl((current) => current.replace(regex, ""));
-      }
+      // if (url.includes(name)) {
+      //   const regex = new RegExp(`(?=&${name})(.*)(?=&|$)`);
+      //   setUrl((current) => current.replace(regex, ""));
+      // }
       setUrl((current) => current + `&${name}=${type}`);
     },
-    [url]
+    []
   );
 
   const fetchCards = useCallback(async () => {
@@ -40,6 +40,7 @@ export default function CardsContainer(props: ComponentProps) {
     }
     setIsLoading(true);
     try {
+      console.log(url);
       const response = await fetch(url);
       const result = await response.json();
       const transformedCards = result.cards.map((card: CardProps) => {
@@ -67,6 +68,7 @@ export default function CardsContainer(props: ComponentProps) {
 
   useEffect(() => {
     if (props.name.trim() !== "") {
+      setPage(1);
       setClassification(true);
       modifedUrlHandler("name", props.name);
     }
@@ -74,9 +76,9 @@ export default function CardsContainer(props: ComponentProps) {
 
   useEffect(() => {
     if (props.select.option.trim() !== "" && props.select.type.trim() !== "") {
+      setPage(1);
       setClassification(true);
       modifedUrlHandler(props.select.type, props.select.option);
-      return console.log(url);
     }
   }, [props.select, url, modifedUrlHandler]);
 
