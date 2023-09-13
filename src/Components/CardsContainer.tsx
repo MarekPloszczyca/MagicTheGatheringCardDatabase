@@ -2,13 +2,6 @@ import { Fragment, useEffect, useState, useCallback, useRef } from "react";
 import Card from "./Card";
 import styles from "./CardsContainer.module.scss";
 
-let url =
-  "https://api.magicthegathering.io/v1/cards?pageSize=50";
-
-const modifedUrlHandler = (name: string, type: string | number) => {
-  url = url + `&${name}=${type}`;
-};
-
 interface CardProps {
   id: string;
   imageUrl: string;
@@ -23,7 +16,23 @@ export default function CardsContainer(props: ComponentProps) {
   const [cards, setCards] = useState([]);
   const [page, setPage] = useState(1);
   const [classification, setClassification] = useState(false);
+  const [url, setUrl] = useState(
+    "https://api.magicthegathering.io/v1/cards?pageSize=50&contains=imageUrl&page=1"
+  );
   const firstLoad = useRef(true);
+
+  console.log(url)
+
+  const modifedUrlHandler = useCallback(
+    (name: string, type: string | number) => {
+      if (url.includes(name)) {
+        const regex = new RegExp(`(?=&${name})(.*)(?=&|$)`);
+        setUrl((current) => current.replace(regex, ""));
+      }
+      setUrl((current) => current + `&${name}=${type}`);
+    },
+    [url]
+  );
 
   const fetchCards = useCallback(async () => {
     if (firstLoad.current === true) {
@@ -33,7 +42,6 @@ export default function CardsContainer(props: ComponentProps) {
     try {
       const response = await fetch(url);
       const result = await response.json();
-      console.log(result);
       const transformedCards = result.cards.map((card: CardProps) => {
         return <Card key={card.id} image={card.imageUrl} />;
       });
@@ -46,7 +54,7 @@ export default function CardsContainer(props: ComponentProps) {
       setIsLoading(false);
       setPage((current) => current + 1);
     }
-  }, [classification]);
+  }, [classification, url]);
 
   useEffect(() => {
     if (classification === false && !firstLoad.current) {
@@ -61,30 +69,28 @@ export default function CardsContainer(props: ComponentProps) {
     if (props.name.trim() !== "") {
       setClassification(true);
       modifedUrlHandler("name", props.name);
-      return console.log(url);
     }
-  }, [props.name, props.select]);
+  }, [props.name, props.select, url, modifedUrlHandler]);
 
   useEffect(() => {
     if (props.select.option.trim() !== "" && props.select.type.trim() !== "") {
-      setPage(1);
       setClassification(true);
       modifedUrlHandler(props.select.type, props.select.option);
       return console.log(url);
     }
-  }, [props.select]);
+  }, [props.select, url, modifedUrlHandler]);
 
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop <
-        document.documentElement.offsetHeight - 30 ||
+        document.documentElement.offsetHeight - 10 ||
       isLoading
     ) {
       return;
     }
     modifedUrlHandler("page", page);
     fetchCards();
-  }, [isLoading, page, fetchCards]);
+  }, [isLoading, page, fetchCards, modifedUrlHandler]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);

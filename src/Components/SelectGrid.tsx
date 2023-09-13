@@ -23,20 +23,20 @@ const layout = new Option(
   ["Layout", "Normal", "Split", "Flip", "Scheme", "Leveler", "Aftermath"],
   ["layout", "normal", "split", "flip", "scheme", "leveler", "aftermath"]
 );
+const rarity = new Option(
+  "rarity",
+  ["Rarity", "Common", "Uncommon", "Rare", "Mythic", "Special"],
+  ["rarity", "common", "uncommon", "rare", "mythic", "special"]
+);
 
-const type = [
-  colors,
-  layout,
-  new Option("Cards", ["All Cards", "Released", "Unreleased"], []),
-  new Option("Ability", ["Ability", "Has Ability", "No Ability"], []),
-];
+const type = [colors, layout, rarity];
 
 interface Props {
   onChange: ChangeEventHandler<HTMLSelectElement>;
 }
 
 export default function SelectGrid(props: Props) {
-  const [render, setRender] = useState([]);
+  const [render, setRender] = useState<JSX.Element[]>();
 
   const renderSelectsHandler = useCallback(() => {
     const searchOptions = type.map((select) => {
@@ -65,8 +65,8 @@ export default function SelectGrid(props: Props) {
 
   const fetchTypes = useCallback(async () => {
     try {
-      const url = "https://api.magicthegathering.io/v1/types";
-      const response = await fetch(url);
+      const typesUrl = "https://api.magicthegathering.io/v1/types";
+      const response = await fetch(typesUrl);
       const result = await response.json();
 
       const types = new Option(

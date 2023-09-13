@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useState, ChangeEvent } from "react";
 import "./App.css";
 import Header from "./Components/Header";
@@ -22,7 +23,7 @@ function App() {
     });
   };
 
-  const addClassification = (event: ChangeEvent<HTMLSelectElement>) => {
+  const addClassification = (event: any) => {
     setType(event.currentTarget.name);
     setOption(event.currentTarget.value);
     setTimeout(() => {
@@ -39,6 +40,8 @@ function App() {
         stateChange={stateChange}
         resetValue={addName}
         onChange={addClassification}
+        onTouchEnd={addClassification}
+        onMouseOut={addClassification}
       />
       <CardsContainer name={name} select={{ type: type, option: option }} />
     </Fragment>
