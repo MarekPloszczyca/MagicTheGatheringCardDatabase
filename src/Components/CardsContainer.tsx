@@ -17,21 +17,19 @@ export default function CardsContainer(props: ComponentProps) {
   const [page, setPage] = useState(1);
   const [classification, setClassification] = useState(false);
   const [url, setUrl] = useState(
-    new URL(
-      "https://api.magicthegathering.io/v1/cards?pageSize=50&contains=imageUrl&page=1"
-    )
+    "https://api.magicthegathering.io/v1/cards?contains=imageUrl&page=1"
   );
   const firstLoad = useRef(true);
 
   const modifedUrlHandler = useCallback(
     (name: string, type: string | number) => {
-      // if (url.includes(name)) {
-      //   const regex = new RegExp(`(?=&${name})(.*)(?=&|$)`);
-      //   setUrl((current) => current.replace(regex, ""));
-      // }
+      if (url.includes(name)) {
+        const regex = new RegExp(`(?=name)(.*?)(?=&|$)(.)`);
+        setUrl((current) => current.replace(regex, ""));
+      }
       setUrl((current) => current + `&${name}=${type}`);
     },
-    []
+    [url]
   );
 
   const fetchCards = useCallback(async () => {
@@ -68,11 +66,10 @@ export default function CardsContainer(props: ComponentProps) {
 
   useEffect(() => {
     if (props.name.trim() !== "") {
-      setPage(1);
       setClassification(true);
       modifedUrlHandler("name", props.name);
     }
-  }, [props.name, props.select, url, modifedUrlHandler]);
+  }, [props.name, props.select, url, modifedUrlHandler, page]);
 
   useEffect(() => {
     if (props.select.option.trim() !== "" && props.select.type.trim() !== "") {
