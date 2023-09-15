@@ -82,7 +82,6 @@ export default function SelectGrid(props: Props) {
       types.urlValues.unshift("types");
       type.push(types);
       renderSelectsHandler();
-      console.log(types);
     } catch (error) {
       console.log(error);
     }

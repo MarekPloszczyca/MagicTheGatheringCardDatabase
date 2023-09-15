@@ -10,6 +10,7 @@ function App() {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [option, setOption] = useState("");
+  
 
   const stateChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -32,6 +33,8 @@ function App() {
     });
   };
 
+ 
+
   return (
     <Fragment>
       <Header />
@@ -42,6 +45,7 @@ function App() {
         onChange={addClassification}
         onTouchEnd={addClassification}
         onMouseOut={addClassification}
+        
       />
       <CardsContainer name={name} select={{ type: type, option: option }} />
     </Fragment>

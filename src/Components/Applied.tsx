@@ -1,0 +1,14 @@
+import { Fragment } from "react";
+import styles from "./Applied.module.scss";
+
+interface Props {
+term:string
+}
+
+export default function Apllied(props : Props) {
+  return (
+    <Fragment>
+      <div className={styles.applied}>{props.term}</div>
+    </Fragment>
+  );
+}

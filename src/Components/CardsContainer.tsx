@@ -11,25 +11,51 @@ interface ComponentProps {
   select: { type: string; option: string };
 }
 
+interface Classification {
+  type: string;
+  option: string | number;
+}
+
 export default function CardsContainer(props: ComponentProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState([]);
-  const [page, setPage] = useState(1);
   const [classification, setClassification] = useState(false);
-  const [url, setUrl] = useState(
-    "https://api.magicthegathering.io/v1/cards?contains=imageUrl&page=1"
-  );
+  const [terms, setTerms] = useState<Classification[]>([]);
   const firstLoad = useRef(true);
+  const page = useRef(1);
+  const url = useRef(
+    "https://api.magicthegathering.io/v1/cards?contains=imageUrl"
+  );
 
   const modifedUrlHandler = useCallback(
-    (name: string, type: string | number) => {
-      if (url.includes(name)) {
-        const regex = new RegExp(`(?=name)(.*?)(?=&|$)(.)`);
-        setUrl((current) => current.replace(regex, ""));
+    (name: string, value: string | number) => {
+      url.current =
+        "https://api.magicthegathering.io/v1/cards?contains=imageUrl";
+      const types: Classification[] = terms;
+      let number = 0;
+      for (const type of types) {
+        if (type.type === value) {
+          const index = types.indexOf(type)
+          types.splice(index, 1);
+          number++;
+        } else if (type.type === name && type.type !== value) {
+          type.option = value;
+          number++;
+        } else if (type.type === "page") {
+          type.option = page.current;
+        }
       }
-      setUrl((current) => current + `&${name}=${type}`);
+      if (number === 0) {
+        types.push({ type: name, option: value });
+      }
+      setTerms(types);
+      terms.forEach((term) => {
+        return (url.current = url.current + `&${term.type}=${term.option}`);
+      });
+
+      console.log(terms, url.current, number);
     },
-    [url]
+    [terms]
   );
 
   const fetchCards = useCallback(async () => {
@@ -38,8 +64,7 @@ export default function CardsContainer(props: ComponentProps) {
     }
     setIsLoading(true);
     try {
-      console.log(url);
-      const response = await fetch(url);
+      const response = await fetch(url.current);
       const result = await response.json();
       const transformedCards = result.cards.map((card: CardProps) => {
         return <Card key={card.id} image={card.imageUrl} />;
@@ -51,7 +76,7 @@ export default function CardsContainer(props: ComponentProps) {
       console.log(error);
     } finally {
       setIsLoading(false);
-      setPage((current) => current + 1);
+      page.current = page.current + 1;
     }
   }, [classification, url]);
 
@@ -59,6 +84,7 @@ export default function CardsContainer(props: ComponentProps) {
     if (classification === false && !firstLoad.current) {
       return;
     } else {
+      page.current = 1;
       fetchCards();
       setClassification(false);
     }
@@ -66,6 +92,7 @@ export default function CardsContainer(props: ComponentProps) {
 
   useEffect(() => {
     if (props.name.trim() !== "") {
+      page.current = 1;
       setClassification(true);
       modifedUrlHandler("name", props.name);
     }
@@ -73,7 +100,7 @@ export default function CardsContainer(props: ComponentProps) {
 
   useEffect(() => {
     if (props.select.option.trim() !== "" && props.select.type.trim() !== "") {
-      setPage(1);
+      page.current = 1;
       setClassification(true);
       modifedUrlHandler(props.select.type, props.select.option);
     }
@@ -87,9 +114,9 @@ export default function CardsContainer(props: ComponentProps) {
     ) {
       return;
     }
-    modifedUrlHandler("page", page);
+    modifedUrlHandler("page", page.current);
     fetchCards();
-  }, [isLoading, page, fetchCards, modifedUrlHandler]);
+  }, [isLoading, fetchCards, modifedUrlHandler]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
