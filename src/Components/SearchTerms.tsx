@@ -12,7 +12,7 @@ interface Props{
   onChange: ChangeEventHandler<HTMLSelectElement>
   onTouchEnd:TouchEventHandler<HTMLInputElement>
   onMouseOut: MouseEventHandler<HTMLInputElement>
-  term:string
+  appliedTerms:string
   }
 
 export default function SearchTerms(props: Props) {
@@ -21,7 +21,7 @@ export default function SearchTerms(props: Props) {
       <NameInput value={props.value} stateChange={props.stateChange} resetValue={props.resetValue}/>
       <SelectGrid onChange={props.onChange}/>
       <RangeInput onTouchEnd={props.onTouchEnd} onMouseOut={props.onMouseOut}/>
-      <AplliedClassifications term={props.term}/>
+      <AplliedClassifications appliedTerms={props.appliedTerms}/>
     </form>
   );
 }

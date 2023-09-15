@@ -2,13 +2,13 @@ import { Fragment } from "react";
 import styles from "./Applied.module.scss";
 
 interface Props {
-term:string
+  identifier: string;
 }
 
-export default function Apllied(props : Props) {
+export default function Apllied(props: Props) {
   return (
     <Fragment>
-      <div className={styles.applied}>{props.term}</div>
+      <div className={styles.applied}>{props.identifier}</div>
     </Fragment>
   );
 }

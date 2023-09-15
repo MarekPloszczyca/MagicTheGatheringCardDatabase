@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useState, useCallback, useRef } from "react";
 import Card from "./Card";
 import styles from "./CardsContainer.module.scss";
@@ -9,6 +10,8 @@ interface CardProps {
 interface ComponentProps {
   name: string;
   select: { type: string; option: string };
+  terms:Classification[];
+  termsHandler:any;
 }
 
 interface Classification {
@@ -20,7 +23,7 @@ export default function CardsContainer(props: ComponentProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [cards, setCards] = useState([]);
   const [classification, setClassification] = useState(false);
-  const [terms, setTerms] = useState<Classification[]>([]);
+
   const firstLoad = useRef(true);
   const page = useRef(1);
   const url = useRef(
@@ -31,7 +34,7 @@ export default function CardsContainer(props: ComponentProps) {
     (name: string, value: string | number) => {
       url.current =
         "https://api.magicthegathering.io/v1/cards?contains=imageUrl";
-      const types: Classification[] = terms;
+      const types: Classification[] = props.terms;
       let number = 0;
       for (const type of types) {
         if (type.type === value) {
@@ -48,14 +51,13 @@ export default function CardsContainer(props: ComponentProps) {
       if (number === 0) {
         types.push({ type: name, option: value });
       }
-      setTerms(types);
-      terms.forEach((term) => {
+      props.termsHandler(types);
+      props.terms.forEach((term) => {
         return (url.current = url.current + `&${term.type}=${term.option}`);
       });
 
-      console.log(terms, url.current, number);
     },
-    [terms]
+    [props]
   );
 
   const fetchCards = useCallback(async () => {

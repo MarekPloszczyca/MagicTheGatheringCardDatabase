@@ -5,11 +5,20 @@ import Header from "./Components/Header";
 import SearchTerms from "./Components/SearchTerms";
 import CardsContainer from "./Components/CardsContainer";
 
+
+interface Classification {
+  type: string;
+  option: string | number;
+}
+
+
 function App() {
   const [value, setValue] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [option, setOption] = useState("");
+  const [terms, setTerms] = useState<Classification[]>([]);
+ 
   
 
   const stateChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +42,11 @@ function App() {
     });
   };
 
+  const termsHandler = (terms:Classification[]) => {
+    setTerms(terms)
+  }
  
+
 
   return (
     <Fragment>
@@ -45,9 +58,9 @@ function App() {
         onChange={addClassification}
         onTouchEnd={addClassification}
         onMouseOut={addClassification}
-        
+        appliedTerms="sadasd"
       />
-      <CardsContainer name={name} select={{ type: type, option: option }} />
+      <CardsContainer name={name} select={{ type: type, option: option }} terms={terms} termsHandler={termsHandler}/>
     </Fragment>
   );
 }
