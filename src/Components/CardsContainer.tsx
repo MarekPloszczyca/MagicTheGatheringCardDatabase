@@ -10,8 +10,9 @@ interface CardProps {
 interface ComponentProps {
   name: string;
   select: { type: string; option: string };
-  terms:Classification[];
-  termsHandler:any;
+  terms: Classification[];
+  termsHandler: any;
+  render: () => void;
 }
 
 interface Classification {
@@ -38,7 +39,7 @@ export default function CardsContainer(props: ComponentProps) {
       let number = 0;
       for (const type of types) {
         if (type.type === value) {
-          const index = types.indexOf(type)
+          const index = types.indexOf(type);
           types.splice(index, 1);
           number++;
         } else if (type.type === name && type.type !== value) {
@@ -52,10 +53,10 @@ export default function CardsContainer(props: ComponentProps) {
         types.push({ type: name, option: value });
       }
       props.termsHandler(types);
+      props.render();
       props.terms.forEach((term) => {
         return (url.current = url.current + `&${term.type}=${term.option}`);
       });
-
     },
     [props]
   );

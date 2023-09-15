@@ -3,7 +3,7 @@ import styles from "./SearchTerms.module.scss";
 import NameInput from "./NameInput";
 import SelectGrid from "./SelectGrid";
 import RangeInput from "./RangeInput";
-import { AplliedClassifications } from "./AppliedClassifications";
+import { AppliedClassifications } from "./AppliedClassifications";
 
 interface Props{
   stateChange : ChangeEventHandler<HTMLInputElement>
@@ -12,7 +12,7 @@ interface Props{
   onChange: ChangeEventHandler<HTMLSelectElement>
   onTouchEnd:TouchEventHandler<HTMLInputElement>
   onMouseOut: MouseEventHandler<HTMLInputElement>
-  appliedTerms:string
+  appliedTerms:(JSX.Element|undefined)[]
   }
 
 export default function SearchTerms(props: Props) {
@@ -21,7 +21,7 @@ export default function SearchTerms(props: Props) {
       <NameInput value={props.value} stateChange={props.stateChange} resetValue={props.resetValue}/>
       <SelectGrid onChange={props.onChange}/>
       <RangeInput onTouchEnd={props.onTouchEnd} onMouseOut={props.onMouseOut}/>
-      <AplliedClassifications appliedTerms={props.appliedTerms}/>
+      <AppliedClassifications appliedTerms={props.appliedTerms}/>
     </form>
   );
 }

@@ -1,10 +1,10 @@
 import styles from "./AppliedClassifications.module.scss";
 
 interface Props {
-  appliedTerms: string;
+  appliedTerms: (JSX.Element|undefined)[];
 }
 
-export function AplliedClassifications(props: Props) {
+export function AppliedClassifications(props: Props) {
   return (
     <div className={styles.appliedClassifications}>
       {props.appliedTerms}
