@@ -29,8 +29,6 @@ const rarity = new Option(
   ["rarity", "common", "uncommon", "rare", "mythic", "special"]
 );
 
-const type = [colors, layout, rarity];
-
 interface Props {
   onChange: ChangeEventHandler<HTMLSelectElement>;
   reset: boolean;
@@ -38,9 +36,10 @@ interface Props {
 
 export default function SelectGrid(props: Props) {
   const [render, setRender] = useState<JSX.Element[]>();
+  const [types, setTypes] = useState([colors, layout, rarity]);
 
   const renderSelectsHandler = useCallback(() => {
-    const searchOptions = type.map((select) => {
+    const searchOptions = types.map((select) => {
       return (
         <ClassificationSelect
           key={select.name}
@@ -62,17 +61,15 @@ export default function SelectGrid(props: Props) {
       );
     });
     setRender(searchOptions);
-  }, []);
+  }, [types]);
 
- 
-  
   const fetchTypes = useCallback(async () => {
     try {
       const typesUrl = "https://api.magicthegathering.io/v1/types";
       const response = await fetch(typesUrl);
       const result = await response.json();
 
-      const types = new Option(
+      const fetchedTypes = new Option(
         "types",
         result.types.map((result: string) => {
           return result;
@@ -81,14 +78,17 @@ export default function SelectGrid(props: Props) {
           return result.toLowerCase();
         })
       );
-      types.options.unshift("Types");
-      types.urlValues.unshift("types");
-      type.push(types);
+      fetchedTypes.options.unshift("Types");
+      fetchedTypes.urlValues.unshift("types");
+      const typesArray = types;
+      typesArray.push(fetchedTypes);
+      setTypes(typesArray);
       renderSelectsHandler();
+      console.log(types)
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [types]);
 
   useEffect(() => {
     fetchTypes();

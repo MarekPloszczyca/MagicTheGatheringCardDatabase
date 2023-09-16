@@ -97,7 +97,7 @@ function App() {
   return (
     <Fragment>
       <Header />
-      (
+   
       <SearchTerms
         value={value}
         stateChange={stateChange}
@@ -109,7 +109,7 @@ function App() {
         onReset={resetHandler}
         reset={reset}
       />
-      ) (
+    
       <CardsContainer
         name={name}
         select={{ type: type, option: option }}
@@ -118,7 +118,7 @@ function App() {
         render={appliedTermsRender}
         reset={reset}
       />
-      )
+     
     </Fragment>
   );
 }
