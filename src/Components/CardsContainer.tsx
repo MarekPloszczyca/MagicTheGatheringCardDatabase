@@ -13,6 +13,7 @@ interface ComponentProps {
   terms: Classification[];
   termsHandler: any;
   render: () => void;
+  reset: boolean;
 }
 
 interface Classification {
@@ -47,6 +48,10 @@ export default function CardsContainer(props: ComponentProps) {
           number++;
         } else if (type.type === "page") {
           type.option = page.current;
+        } else if (type.type === "name" && type.option === "") {
+          const index = types.indexOf(type);
+          types.splice(index, 1);
+          number++;
         }
       }
       if (number === 0) {
@@ -100,6 +105,15 @@ export default function CardsContainer(props: ComponentProps) {
       modifedUrlHandler("name", props.name);
     }
   }, [props.name, props.select, url, modifedUrlHandler, page]);
+
+  useEffect(() => {
+    if (props.reset !== false) {
+      page.current = 1;
+      url.current =
+        "https://api.magicthegathering.io/v1/cards?contains=imageUrl";
+     setClassification(true)
+    }
+  }, [props.reset, modifedUrlHandler]);
 
   useEffect(() => {
     if (props.select.option.trim() !== "" && props.select.type.trim() !== "") {

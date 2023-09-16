@@ -4,7 +4,7 @@ interface Props {
   appliedTerms: (JSX.Element|undefined)[];
 }
 
-export function AppliedClassifications(props: Props) {
+export default function AppliedClassifications(props: Props) {
   return (
     <div className={styles.appliedClassifications}>
       {props.appliedTerms}

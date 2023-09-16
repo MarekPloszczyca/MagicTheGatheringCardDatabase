@@ -33,6 +33,7 @@ const type = [colors, layout, rarity];
 
 interface Props {
   onChange: ChangeEventHandler<HTMLSelectElement>;
+  reset: boolean;
 }
 
 export default function SelectGrid(props: Props) {
@@ -63,6 +64,8 @@ export default function SelectGrid(props: Props) {
     setRender(searchOptions);
   }, []);
 
+ 
+  
   const fetchTypes = useCallback(async () => {
     try {
       const typesUrl = "https://api.magicthegathering.io/v1/types";
@@ -85,7 +88,7 @@ export default function SelectGrid(props: Props) {
     } catch (error) {
       console.log(error);
     }
-  }, [renderSelectsHandler]);
+  }, []);
 
   useEffect(() => {
     fetchTypes();

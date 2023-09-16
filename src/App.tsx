@@ -15,17 +15,17 @@ const termsNameHandler = (type: string, value: string | number) => {
   if (type == "colors") {
     switch (value) {
       case "U":
-        return "Blue";
+        return "blue";
       case "W":
-        return "White";
+        return "white";
       case "B":
-        return "Black";
+        return "black";
       case "G":
-        return "Green";
+        return "green";
       case "R":
-        return "Red";
+        return "red";
       default:
-        return "Color";
+        return "color";
     }
   } else if (type == "cmc") {
     return "Total cost: " + value;
@@ -41,18 +41,14 @@ function App() {
   const [appliedTerms, setAppliedTerms] = useState<(JSX.Element | undefined)[]>(
     []
   );
-  const [loading, setLoading] = useState(true);
-
-  const loadHandler = () => {
-    setLoading(false);
-  };
+  const [reset, setReset] = useState(false);
 
   const stateChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
   const addName = () => {
-    setName(value);
+    setName(value.trim());
     setValue("");
     setTimeout(() => {
       setName("");
@@ -62,9 +58,21 @@ function App() {
   const addClassification = (event: any) => {
     setType(event.currentTarget.name);
     setOption(event.currentTarget.value);
+    console.log(event.currentTarget.name,event.currentTarget.value)
     setTimeout(() => {
       setType("");
       setOption("");
+    });
+  };
+
+  const resetHandler = (event: any) => {
+    event.preventDefault();
+    setName("");
+    setTerms([]);
+    setAppliedTerms([]);
+    setReset(true);
+    setTimeout(() => {
+      setReset(false);
     });
   };
 
@@ -88,27 +96,29 @@ function App() {
 
   return (
     <Fragment>
-      <Header/>
-
-      {!loading && (
-        <SearchTerms
-          value={value}
-          stateChange={stateChange}
-          resetValue={addName}
-          onChange={addClassification}
-          onTouchEnd={addClassification}
-          onMouseOut={addClassification}
-          appliedTerms={appliedTerms}
-        />
-      )}
-
-      {!loading &&<CardsContainer
+      <Header />
+      (
+      <SearchTerms
+        value={value}
+        stateChange={stateChange}
+        resetValue={addName}
+        onChange={addClassification}
+        onTouchEnd={addClassification}
+        onMouseOut={addClassification}
+        appliedTerms={appliedTerms}
+        onReset={resetHandler}
+        reset={reset}
+      />
+      ) (
+      <CardsContainer
         name={name}
         select={{ type: type, option: option }}
         terms={terms}
         termsHandler={termsHandler}
         render={appliedTermsRender}
-      />}
+        reset={reset}
+      />
+      )
     </Fragment>
   );
 }
