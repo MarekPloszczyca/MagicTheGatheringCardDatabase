@@ -1,6 +1,6 @@
 import { MouseEventHandler, ChangeEventHandler } from "react";
 import styles from "./NameInput.module.scss";
-import Reset from "./Reset";
+
 
 interface Props{
 stateChange :ChangeEventHandler<HTMLInputElement>
@@ -11,7 +11,7 @@ onReset:MouseEventHandler
 
 export default function NameInput(props:Props) {
   return (
-  <div className={styles.nameContainer}>
+
       <input
         className={styles.nameInput}
         placeholder="Search Card"
@@ -27,6 +27,6 @@ export default function NameInput(props:Props) {
             props.resetValue();
           }
         }}
-      ></input><Reset reset={props.onReset}/></div>
+      ></input>
   );
 }

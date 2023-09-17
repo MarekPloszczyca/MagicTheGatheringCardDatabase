@@ -22,7 +22,7 @@ export default function RangeInput(props: Props) {
         onClick={() => setInputTouch(true)}
         onTouchStart={() => setInputTouch(true)}
         onChange={(event) => setInputValue(event.currentTarget.value)}
-        onMouseOut={props.onMouseOut}
+        onMouseUp={props.onMouseOut}
         onTouchEnd={props.onTouchEnd}
       ></input>
       {inputTouch && <p>{inputValue}</p>}

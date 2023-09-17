@@ -7,7 +7,7 @@ interface Props {
 
 export default function Reset(props: Props) {
   return (
-    <button className={styles.resetButton} onClick={props.reset}>
+    <button type="reset" className={styles.resetButton} onClick={props.reset}>
       Reset
     </button>
   );

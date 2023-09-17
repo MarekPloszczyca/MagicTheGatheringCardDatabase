@@ -58,15 +58,13 @@ function App() {
   const addClassification = (event: any) => {
     setType(event.currentTarget.name);
     setOption(event.currentTarget.value);
-    console.log(event.currentTarget.name,event.currentTarget.value)
     setTimeout(() => {
       setType("");
       setOption("");
     });
   };
 
-  const resetHandler = (event: any) => {
-    event.preventDefault();
+  const resetHandler = () => {
     setName("");
     setTerms([]);
     setAppliedTerms([]);
