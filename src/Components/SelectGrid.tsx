@@ -66,6 +66,7 @@ export default function SelectGrid(props: Props) {
       );
     });
     setRender(searchOptions);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [types]);
 
   const fetchTypes = useCallback(async () => {
@@ -94,6 +95,7 @@ export default function SelectGrid(props: Props) {
       console.log(error);
     }
    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [types]);
 
   useEffect(() => {

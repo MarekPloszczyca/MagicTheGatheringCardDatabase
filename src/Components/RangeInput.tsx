@@ -13,6 +13,7 @@ interface Props {
   inputTouch: boolean;
   onClick: MouseEventHandler<HTMLInputElement>;
   onTouchStart: TouchEventHandler<HTMLInputElement>;
+  onMouseStart:MouseEventHandler<HTMLInputElement>;
 }
 
 export default function RangeInput(props: Props) {
@@ -25,6 +26,7 @@ export default function RangeInput(props: Props) {
         max="20"
         value={props.inputValue}
         onClick={props.onClick}
+        onMouseDown={props.onMouseStart}
         onTouchStart={props.onTouchStart}
         onChange={props.onChange}
         onMouseUp={props.onMouseOut}

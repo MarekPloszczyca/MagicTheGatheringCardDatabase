@@ -37,7 +37,7 @@ export default function SearchTerms(props: Props) {
     setInputTouch(false);
   };
   return (
-    <Fragment>{termsLoading &&<LoadingIcon/>}
+    <Fragment>{termsLoading && <LoadingIcon/>}
     <form
       className={styles.searchTerms}
       onSubmit={() => {
@@ -67,6 +67,7 @@ export default function SearchTerms(props: Props) {
     {!termsLoading && <RangeInput
         onTouchEnd={props.onTouchEnd}
         onMouseOut={props.onMouseOut}
+        onMouseStart={() => {setInputTouch(true)}}
         inputValue={inputValue}
         onChange={(event: {
           currentTarget: { value: SetStateAction<string> };

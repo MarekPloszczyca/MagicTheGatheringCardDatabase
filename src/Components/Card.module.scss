@@ -2,13 +2,37 @@
   display: flex;
   flex-direction: column;
   place-items: center;
-  color:#ffffff;
+  color: #ffffff;
+
   text-align: center;
-  padding:1rem;
+  padding: 1rem;
 }
-.card img{
+.card img {
   width: 100%;
   max-width: 15rem;
-  height:auto;
+  height: auto;
+  border: solid 0.5rem #10072b;
+  border-radius: 1rem;
 }
 
+@media (min-width: 768px) {
+  .card img:hover {
+    position: absolute;
+    width: 120%;
+    max-width: 20rem;
+    cursor: pointer;
+    animation-name: cardHover;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+  }
+  @keyframes cardHover {
+    0% {
+      width: 15rem;
+      border-color: #10072b;
+    }
+    100% {
+      width: 20rem;
+      border-color: #210f57;
+    }
+  }
+}

@@ -4,4 +4,12 @@
     border:solid 0.05rem #343434;
     background-color: #1b1e29;
     color:#ffffff;
+    cursor: pointer;
+}
+.resetButton:focus {
+    outline: none;
+  }
+
+.resetButton:hover{
+    border-color:#1b1e29;
 }

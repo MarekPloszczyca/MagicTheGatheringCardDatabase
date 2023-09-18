@@ -6,10 +6,13 @@
     border-radius: 0.5rem;
     background-color: #1b1e29;
     color: #ffffff;
+    cursor: pointer;
   }
   .classificationSelect:focus {
       outline: none;
-      border: solid 0.05rem rgb(0, 0, 148);
     }
+    .classificationSelect:hover{
+      border-color:#1b1e29;
+  }
     
     
