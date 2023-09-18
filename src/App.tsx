@@ -43,6 +43,7 @@ function App() {
   );
   const [reset, setReset] = useState(false);
 
+
   const stateChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
@@ -78,6 +79,8 @@ function App() {
     setTerms(terms);
   };
 
+  
+
   const appliedTermsRender = () => {
     const applied: (JSX.Element | undefined)[] = terms.map((term) => {
       if (term.type !== "page") {
@@ -95,7 +98,6 @@ function App() {
   return (
     <Fragment>
       <Header />
-   
       <SearchTerms
         value={value}
         stateChange={stateChange}
@@ -107,16 +109,19 @@ function App() {
         onReset={resetHandler}
         reset={reset}
       />
-    
-      <CardsContainer
-        name={name}
-        select={{ type: type, option: option }}
-        terms={terms}
-        termsHandler={termsHandler}
-        render={appliedTermsRender}
-        reset={reset}
-      />
-     
+
+       
+        <CardsContainer
+          name={name}
+          select={{ type: type, option: option }}
+          terms={terms}
+          termsHandler={termsHandler}
+          render={appliedTermsRender}
+          reset={reset}
+          
+       
+        />
+      
     </Fragment>
   );
 }

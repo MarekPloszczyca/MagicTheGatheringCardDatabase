@@ -14,6 +14,7 @@ interface ComponentProps {
   termsHandler: any;
   render: () => void;
   reset: boolean;
+
 }
 
 interface Classification {
@@ -71,6 +72,7 @@ export default function CardsContainer(props: ComponentProps) {
       firstLoad.current = false;
     }
     setIsLoading(true);
+   
     try {
       const response = await fetch(url.current);
       const result = await response.json();
@@ -84,7 +86,9 @@ export default function CardsContainer(props: ComponentProps) {
       console.log(error);
     } finally {
       setIsLoading(false);
+  
       page.current = page.current + 1;
+      console.log("s")
     }
   }, [classification, url]);
 

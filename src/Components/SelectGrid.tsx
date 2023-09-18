@@ -64,11 +64,11 @@ export default function SelectGrid(props: Props) {
   }, [types]);
 
   const fetchTypes = useCallback(async () => {
+  
     try {
       const typesUrl = "https://api.magicthegathering.io/v1/types";
       const response = await fetch(typesUrl);
       const result = await response.json();
-
       const fetchedTypes = new Option(
         "types",
         result.types.map((result: string) => {
@@ -84,10 +84,11 @@ export default function SelectGrid(props: Props) {
       typesArray.push(fetchedTypes);
       setTypes(typesArray);
       renderSelectsHandler();
-      console.log(types)
+      
     } catch (error) {
       console.log(error);
     }
+   
   }, [types]);
 
   useEffect(() => {
