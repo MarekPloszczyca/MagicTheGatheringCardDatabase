@@ -2,6 +2,7 @@ import { ChangeEventHandler, useEffect, useState, useCallback } from "react";
 import ClassificationSelect from "./ClassificationSelect";
 import styles from "./SelectGrid.module.scss";
 
+
 class Option {
   name: string;
   options: string[];
@@ -31,14 +32,18 @@ const rarity = new Option(
 
 interface Props {
   onChange: ChangeEventHandler<HTMLSelectElement>;
-  reset: boolean;
+  reset: boolean; 
+  loading:boolean;
+  setLoading:(boolean:boolean) => void;
 }
 
 export default function SelectGrid(props: Props) {
   const [render, setRender] = useState<JSX.Element[]>();
   const [types, setTypes] = useState([colors, layout, rarity]);
+ 
 
   const renderSelectsHandler = useCallback(() => {
+    
     const searchOptions = types.map((select) => {
       return (
         <ClassificationSelect
@@ -64,7 +69,7 @@ export default function SelectGrid(props: Props) {
   }, [types]);
 
   const fetchTypes = useCallback(async () => {
-  
+    props.setLoading(true)
     try {
       const typesUrl = "https://api.magicthegathering.io/v1/types";
       const response = await fetch(typesUrl);
@@ -84,7 +89,7 @@ export default function SelectGrid(props: Props) {
       typesArray.push(fetchedTypes);
       setTypes(typesArray);
       renderSelectsHandler();
-      
+      props.setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +97,7 @@ export default function SelectGrid(props: Props) {
   }, [types]);
 
   useEffect(() => {
+   
     fetchTypes();
   }, [fetchTypes]);
 

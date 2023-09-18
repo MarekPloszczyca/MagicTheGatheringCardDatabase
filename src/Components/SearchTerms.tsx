@@ -4,6 +4,7 @@ import {
   MouseEventHandler,
   useState,
   SetStateAction,
+  Fragment,
 } from "react";
 import styles from "./SearchTerms.module.scss";
 import NameInput from "./NameInput";
@@ -11,6 +12,7 @@ import SelectGrid from "./SelectGrid";
 import RangeInput from "./RangeInput";
 import AppliedClassifications from "./AppliedClassifications";
 import Reset from "./Reset";
+import LoadingIcon from "./LoadingIcon";
 
 interface Props {
   stateChange: ChangeEventHandler<HTMLInputElement>;
@@ -27,6 +29,7 @@ interface Props {
 export default function SearchTerms(props: Props) {
   const [inputValue, setInputValue] = useState("0");
   const [inputTouch, setInputTouch] = useState(false);
+  const [termsLoading, setTermsLoading] = useState(false);
 
   const resetValue = () => {
     const value = "0";
@@ -34,6 +37,7 @@ export default function SearchTerms(props: Props) {
     setInputTouch(false);
   };
   return (
+    <Fragment>{termsLoading &&<LoadingIcon/>}
     <form
       className={styles.searchTerms}
       onSubmit={() => {
@@ -41,22 +45,26 @@ export default function SearchTerms(props: Props) {
       }}
       onReset={resetValue}
     >
-      <div className={styles.nameContainer}>
-        <NameInput
-          value={props.value}
-          stateChange={props.stateChange}
-          resetValue={props.resetValue}
-          onReset={props.onReset}
-        />
-        <Reset reset={props.onReset} />
-      </div>
+      
+      <Fragment>{!termsLoading && <div className={styles.nameContainer}>
+     
+            <NameInput
+              value={props.value}
+              stateChange={props.stateChange}
+              resetValue={props.resetValue}
+              onReset={props.onReset}
+            />
+         <Reset reset={props.onReset} />
+      </div>}</Fragment>
 
       <SelectGrid
         onChange={props.onChange}
         reset={props.reset}
+        loading={termsLoading}
+        setLoading={setTermsLoading}
       />
 
-      <RangeInput
+    {!termsLoading && <RangeInput
         onTouchEnd={props.onTouchEnd}
         onMouseOut={props.onMouseOut}
         inputValue={inputValue}
@@ -70,9 +78,9 @@ export default function SearchTerms(props: Props) {
         onTouchStart={() => {
           setInputTouch(true);
         }}
-      />
+      />}
 
-      <AppliedClassifications appliedTerms={props.appliedTerms} />
-    </form>
+      {!termsLoading && <AppliedClassifications appliedTerms={props.appliedTerms} />}
+    </form></Fragment>
   );
 }

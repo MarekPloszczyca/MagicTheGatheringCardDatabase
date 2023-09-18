@@ -2,6 +2,7 @@
 import { Fragment, useEffect, useState, useCallback, useRef } from "react";
 import Card from "./Card";
 import styles from "./CardsContainer.module.scss";
+import LoadingIcon from "./LoadingIcon";
 
 interface CardProps {
   id: string;
@@ -14,7 +15,6 @@ interface ComponentProps {
   termsHandler: any;
   render: () => void;
   reset: boolean;
-
 }
 
 interface Classification {
@@ -23,9 +23,12 @@ interface Classification {
 }
 
 export default function CardsContainer(props: ComponentProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [cardsLoading, setCardsLoading] = useState(false);
   const [cards, setCards] = useState([]);
   const [classification, setClassification] = useState(false);
+  const [newSearch, setNewSearch] = useState(false);
+  const [noResults, setNoResults] = useState(false);
+  
 
   const firstLoad = useRef(true);
   const page = useRef(1);
@@ -71,8 +74,7 @@ export default function CardsContainer(props: ComponentProps) {
     if (firstLoad.current === true) {
       firstLoad.current = false;
     }
-    setIsLoading(true);
-   
+    setCardsLoading(true);
     try {
       const response = await fetch(url.current);
       const result = await response.json();
@@ -82,13 +84,15 @@ export default function CardsContainer(props: ComponentProps) {
       !classification
         ? setCards((current) => current.concat(transformedCards))
         : setCards(transformedCards);
+      if (transformedCards.length === 0) {
+        setNoResults(true);
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
-  
+      setCardsLoading(false);
+      setNewSearch(false);
       page.current = page.current + 1;
-      console.log("s")
     }
   }, [classification, url]);
 
@@ -106,6 +110,8 @@ export default function CardsContainer(props: ComponentProps) {
     if (props.name.trim() !== "") {
       page.current = 1;
       setClassification(true);
+      setNewSearch(true);
+      setNoResults(false);
       modifedUrlHandler("name", props.name);
     }
   }, [props.name, props.select, url, modifedUrlHandler, page]);
@@ -115,7 +121,9 @@ export default function CardsContainer(props: ComponentProps) {
       page.current = 1;
       url.current =
         "https://api.magicthegathering.io/v1/cards?contains=imageUrl";
-     setClassification(true)
+      setNewSearch(true);
+      setClassification(true);
+      setNoResults(false);
     }
   }, [props.reset, modifedUrlHandler]);
 
@@ -123,6 +131,8 @@ export default function CardsContainer(props: ComponentProps) {
     if (props.select.option.trim() !== "" && props.select.type.trim() !== "") {
       page.current = 1;
       setClassification(true);
+      setNewSearch(true);
+      setNoResults(false);
       modifedUrlHandler(props.select.type, props.select.option);
     }
   }, [props.select, url, modifedUrlHandler]);
@@ -131,23 +141,25 @@ export default function CardsContainer(props: ComponentProps) {
     if (
       window.innerHeight + document.documentElement.scrollTop <
         document.documentElement.offsetHeight - 10 ||
-      isLoading
+      cardsLoading ||
+      noResults === true
     ) {
       return;
     }
     modifedUrlHandler("page", page.current);
     fetchCards();
-  }, [isLoading, fetchCards, modifedUrlHandler]);
+  }, [cardsLoading, fetchCards, modifedUrlHandler, noResults]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLoading, handleScroll]);
+  }, [cardsLoading, handleScroll]);
 
   return (
     <Fragment>
-      <div className={styles.cardsContainer}>{cards}</div>
-      {isLoading && <p>Loading...</p>}
+      {!newSearch && <div className={styles.cardsContainer}>{cards}</div>}
+      {cardsLoading && <LoadingIcon />}
+      {noResults && <div className={styles.noResults}><p>There are no more results.</p></div>}
     </Fragment>
   );
 }
