@@ -11,6 +11,8 @@ interface Classification {
   option: string | number;
 }
 
+
+
 const termsNameHandler = (type: string, value: string | number) => {
   if (type == "colors") {
     switch (value) {

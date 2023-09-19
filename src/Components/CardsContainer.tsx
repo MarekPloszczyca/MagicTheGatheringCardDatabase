@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useState, useCallback, useRef } from "react";
+import {Link} from "react-router-dom";
 import Card from "./Card";
 import styles from "./CardsContainer.module.scss";
 import LoadingIcon from "./LoadingIcon";
@@ -78,8 +79,10 @@ export default function CardsContainer(props: ComponentProps) {
     try {
       const response = await fetch(url.current);
       const result = await response.json();
+      console.group(result)
       const transformedCards = result.cards.map((card: CardProps) => {
-        return <Card key={card.id} image={card.imageUrl} />;
+        return <Link
+        key={card.id} to={`card/${card.id}`}><Card  image={card.imageUrl} /></Link>;
       });
       !classification
         ? setCards((current) => current.concat(transformedCards))
