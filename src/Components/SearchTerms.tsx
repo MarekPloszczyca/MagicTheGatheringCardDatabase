@@ -24,6 +24,7 @@ interface Props {
   appliedTerms: (JSX.Element | undefined)[];
   onReset: MouseEventHandler;
   reset: boolean;
+  available: boolean;
 }
 
 export default function SearchTerms(props: Props) {
@@ -37,51 +38,65 @@ export default function SearchTerms(props: Props) {
     setInputTouch(false);
   };
   return (
-    <Fragment>{termsLoading && <LoadingIcon/>}
-    <form
-      className={styles.searchTerms}
-      onSubmit={() => {
-        return false;
-      }}
-      onReset={resetValue}
-    >
-      
-      <Fragment>{!termsLoading && <div className={styles.nameContainer}>
-     
-            <NameInput
-              value={props.value}
-              stateChange={props.stateChange}
-              resetValue={props.resetValue}
-              onReset={props.onReset}
-            />
-         <Reset reset={props.onReset} />
-      </div>}</Fragment>
-
-      <SelectGrid
-        onChange={props.onChange}
-        reset={props.reset}
-        loading={termsLoading}
-        setLoading={setTermsLoading}
-      />
-
-    {!termsLoading && <RangeInput
-        onTouchEnd={props.onTouchEnd}
-        onMouseOut={props.onMouseOut}
-        onMouseStart={() => {setInputTouch(true)}}
-        inputValue={inputValue}
-        onChange={(event: {
-          currentTarget: { value: SetStateAction<string> };
-        }) => setInputValue(event.currentTarget.value)}
-        inputTouch={inputTouch}
-        onClick={() => {
-          setInputTouch(true);
+    <Fragment>
+      {termsLoading && <LoadingIcon />}
+      <form
+        className={styles.searchTerms}
+        onSubmit={() => {
+          return false;
         }}
-        onTouchStart={() => {
-          setInputTouch(true);
-        }}
-      />}
+        onReset={resetValue}
+      >
+        <Fragment>
+          {!termsLoading && (
+            <div className={styles.nameContainer}>
+              <NameInput
+                value={props.value}
+                stateChange={props.stateChange}
+                resetValue={props.resetValue}
+                onReset={props.onReset}
+                available={props.available}
+              />
+              <Reset reset={props.onReset} available={props.available} />
+            </div>
+          )}
+        </Fragment>
 
-      {!termsLoading && <AppliedClassifications appliedTerms={props.appliedTerms} />}
-    </form></Fragment>
+        <SelectGrid
+          onChange={props.onChange}
+          reset={props.reset}
+          loading={termsLoading}
+          setLoading={setTermsLoading}
+          available={props.available}
+        />
+
+        {!termsLoading && (
+          <RangeInput
+            available={props.available}
+            onTouchEnd={props.onTouchEnd}
+            onMouseOut={props.onMouseOut}
+            onMouseStart={() => {
+              setInputTouch(true);
+            }}
+            inputValue={inputValue}
+            onChange={(event: {
+              currentTarget: { value: SetStateAction<string> };
+            }) => setInputValue(event.currentTarget.value)}
+            inputTouch={inputTouch}
+            onClick={() => {
+              setInputTouch(true);
+            }}
+            onTouchStart={() => {
+              setInputTouch(true);
+            }}
+          
+          />
+        )}
+
+        {!termsLoading && (
+          <AppliedClassifications appliedTerms={props.appliedTerms} />
+        )}
+      </form>
+    </Fragment>
   );
 }

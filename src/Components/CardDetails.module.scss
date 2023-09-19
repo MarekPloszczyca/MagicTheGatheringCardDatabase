@@ -1,5 +1,17 @@
-.cardDetails{
-    display: flex;
-    flex-direction: column;
-    color:#ffffff;
+.cardDetails {
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  h2 {
+    font-size: 2rem;
+  }
+  span {
+    font-weight: bold;
+  }
+}
+
+.flavor {
+  font-size: 1rem;
+  font-style: italic;
 }

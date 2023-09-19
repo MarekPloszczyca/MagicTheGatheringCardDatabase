@@ -1,4 +1,4 @@
-.card {
+%card {
   display: flex;
   flex-direction: column;
   place-items: center;
@@ -6,18 +6,25 @@
 
   text-align: center;
   padding: 1rem;
+  
+  img {
+    width: 100%;
+    max-width: 15rem;
+    height: auto;
+    border: solid 0.5rem #10072b;
+    border-radius: 1rem;
+  }
 }
-.card img {
-  width: 100%;
-  max-width: 15rem;
-  height: auto;
-  border: solid 0.5rem #10072b;
-  border-radius: 1rem;
+
+.card {
+  @extend %card;
+}
+.singleCard {
+  @extend %card;
 }
 
 @media (min-width: 768px) {
-  .card img:hover {
-    position: absolute;
+  %card img:hover {
     width: 120%;
     max-width: 20rem;
     cursor: pointer;
@@ -34,5 +41,12 @@
       width: 20rem;
       border-color: #210f57;
     }
+  }
+  .card img:hover {
+    position: absolute;
+  }
+
+  .singleCard img:hover {
+    position: relative;
   }
 }

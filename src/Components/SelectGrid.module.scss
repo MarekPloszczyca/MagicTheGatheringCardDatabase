@@ -1,9 +1,26 @@
-.selectGrid{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
-    place-items: center;
-    width:80%;
-    gap:1.5rem;
-    padding:1.5rem;
+%selectGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  place-items: center;
+  width: 100%;
+  gap: 1.5rem;
+}
+%selectContainer {
+  width: 80%;
+  padding: 1.5rem;
+}
+.selectGrid {
+  @extend %selectGrid;
+}
+.notAvailable {
+  @extend %selectGrid;
+  pointer-events: none;
+}
+.selectContainer {
+  @extend %selectContainer;
+}
+.selectContainerNotAvailable {
+  @extend %selectContainer;
+  cursor: not-allowed;
 }

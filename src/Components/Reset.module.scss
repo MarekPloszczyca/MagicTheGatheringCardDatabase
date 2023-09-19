@@ -1,4 +1,4 @@
-.resetButton {
+%resetButton {
     padding:0.5rem;
     border-radius: 1rem;
     border:solid 0.05rem #343434;
@@ -6,10 +6,20 @@
     color:#ffffff;
     cursor: pointer;
 }
-.resetButton:focus {
+%resetButton:focus {
     outline: none;
   }
 
-.resetButton:hover{
+%resetButton:hover{
     border-color:#1b1e29;
 }
+.resetButton{
+    @extend %resetButton
+}
+.notAvailable {
+    @extend %resetButton;
+    pointer-events: none;
+  }
+  .resetContainerNotAvailable {
+    cursor: not-allowed;
+  }

@@ -1,12 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ReactDOM from "react-dom/client";
 import App from "./routes/App.tsx";
 import ErrorPage from "./error-page.tsx";
 import CardPage from "./routes/CardPage.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-
-
-async function cardLoader({params}) {
+async function cardLoader({ params }: any) {
   const response = await fetch(
     `https://api.magicthegathering.io/v1/cards/${params.id}`
   );
@@ -24,6 +23,7 @@ const router = createBrowserRouter([
     path: "card/:id",
     element: <CardPage />,
     loader: cardLoader,
+    errorElement: <ErrorPage />,
   },
 ]);
 

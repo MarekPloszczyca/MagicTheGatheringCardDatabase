@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useState, useCallback, useRef } from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Card from "./Card";
 import styles from "./CardsContainer.module.scss";
 import LoadingIcon from "./LoadingIcon";
@@ -16,6 +16,8 @@ interface ComponentProps {
   termsHandler: any;
   render: () => void;
   reset: boolean;
+  allowed: () => void;
+  notAllowed: () => void;
 }
 
 interface Classification {
@@ -29,7 +31,6 @@ export default function CardsContainer(props: ComponentProps) {
   const [classification, setClassification] = useState(false);
   const [newSearch, setNewSearch] = useState(false);
   const [noResults, setNoResults] = useState(false);
-  
 
   const firstLoad = useRef(true);
   const page = useRef(1);
@@ -76,13 +77,17 @@ export default function CardsContainer(props: ComponentProps) {
       firstLoad.current = false;
     }
     setCardsLoading(true);
+    props.notAllowed();
+
     try {
       const response = await fetch(url.current);
       const result = await response.json();
-      console.group(result)
       const transformedCards = result.cards.map((card: CardProps) => {
-        return <Link
-        key={card.id} to={`card/${card.id}`}><Card  image={card.imageUrl} /></Link>;
+        return (
+          <Link key={card.id} to={`card/${card.id}`}>
+            <Card image={card.imageUrl} single={false} />
+          </Link>
+        );
       });
       !classification
         ? setCards((current) => current.concat(transformedCards))
@@ -95,6 +100,7 @@ export default function CardsContainer(props: ComponentProps) {
     } finally {
       setCardsLoading(false);
       setNewSearch(false);
+      props.allowed();
       page.current = page.current + 1;
     }
   }, [classification, url]);
@@ -162,7 +168,11 @@ export default function CardsContainer(props: ComponentProps) {
     <Fragment>
       {!newSearch && <div className={styles.cardsContainer}>{cards}</div>}
       {cardsLoading && <LoadingIcon />}
-      {noResults && <div className={styles.noResults}><p>There are no more results.</p></div>}
+      {noResults && (
+        <div className={styles.noResults}>
+          <p>There are no more results.</p>
+        </div>
+      )}
     </Fragment>
   );
 }

@@ -2,7 +2,6 @@ import { ChangeEventHandler, useEffect, useState, useCallback } from "react";
 import ClassificationSelect from "./ClassificationSelect";
 import styles from "./SelectGrid.module.scss";
 
-
 class Option {
   name: string;
   options: string[];
@@ -32,18 +31,17 @@ const rarity = new Option(
 
 interface Props {
   onChange: ChangeEventHandler<HTMLSelectElement>;
-  reset: boolean; 
-  loading:boolean;
-  setLoading:(boolean:boolean) => void;
+  reset: boolean;
+  loading: boolean;
+  setLoading: (boolean: boolean) => void;
+  available: boolean;
 }
 
 export default function SelectGrid(props: Props) {
   const [render, setRender] = useState<JSX.Element[]>();
   const [types, setTypes] = useState([colors, layout, rarity]);
- 
 
   const renderSelectsHandler = useCallback(() => {
-    
     const searchOptions = types.map((select) => {
       return (
         <ClassificationSelect
@@ -66,11 +64,11 @@ export default function SelectGrid(props: Props) {
       );
     });
     setRender(searchOptions);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [types]);
 
   const fetchTypes = useCallback(async () => {
-    props.setLoading(true)
+    props.setLoading(true);
     try {
       const typesUrl = "https://api.magicthegathering.io/v1/types";
       const response = await fetch(typesUrl);
@@ -90,18 +88,31 @@ export default function SelectGrid(props: Props) {
       typesArray.push(fetchedTypes);
       setTypes(typesArray);
       renderSelectsHandler();
-      props.setLoading(false)
+      props.setLoading(false);
     } catch (error) {
       console.log(error);
     }
-   
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [types]);
 
   useEffect(() => {
-   
     fetchTypes();
   }, [fetchTypes]);
 
-  return <div className={styles.selectGrid}>{render}</div>;
+  return (
+    <div
+      className={
+        props.available
+          ? styles.selectContainer
+          : styles.selectContainerNotAvailable
+      }
+    >
+      <div
+        className={props.available ? styles.selectGrid : styles.notAvailable}
+      >
+        {render}
+      </div>
+    </div>
+  );
 }

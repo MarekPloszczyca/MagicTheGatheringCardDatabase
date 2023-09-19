@@ -7,13 +7,14 @@ stateChange :ChangeEventHandler<HTMLInputElement>
 value:string
 resetValue: () => void
 onReset:MouseEventHandler
+available:boolean;
 }
 
 export default function NameInput(props:Props) {
   return (
 
-      <input
-        className={styles.nameInput}
+      <div className={props.available ? styles.nameContainer : styles.nameContainerNotAvailable}><input
+        className={props.available ? styles.nameInput : styles.notAvailable}
         placeholder="Search Card"
         type="search"
         name="cardName"
@@ -27,6 +28,6 @@ export default function NameInput(props:Props) {
             props.resetValue();
           }
         }}
-      ></input>
+      ></input></div>
   );
 }

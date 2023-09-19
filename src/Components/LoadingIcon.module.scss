@@ -3,38 +3,43 @@
   padding-top: 2rem;
   justify-content: center;
   color: #ffffff;
-}
-.loadingIcon img{
-    width:2rem;
-    height:auto;
+
+  img {
+    width: 2rem;
+    height: auto;
     animation-name: colors;
     animation-duration: 2s;
     animation-iteration-count: infinite;
-}
-@keyframes colors{
-    0% {transform: rotate(0deg);}
-    100%{transform: rotate(360deg);}
+  }
 }
 
+@keyframes colors {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-%imagesContainer{
-    position: relative;
+%imagesContainer {
+  position: relative;
 }
-.green{
-    @extend %imagesContainer;
-    bottom:1rem;
+.green {
+  @extend %imagesContainer;
+  bottom: 1rem;
 }
-.bottom{
-    @extend %imagesContainer;
-    top:4rem;
+.bottom {
+  @extend %imagesContainer;
+  top: 4rem;
 }
-.red{
-    @extend %imagesContainer;
-    top:1rem;
-    left:1rem;
+.red {
+  @extend %imagesContainer;
+  top: 1rem;
+  left: 1rem;
 }
-.black{
-    @extend %imagesContainer;
-    top:1rem;
-    right:1rem;
+.black {
+  @extend %imagesContainer;
+  top: 1rem;
+  right: 1rem;
 }

@@ -11,8 +11,6 @@ interface Classification {
   option: string | number;
 }
 
-
-
 const termsNameHandler = (type: string, value: string | number) => {
   if (type == "colors") {
     switch (value) {
@@ -44,8 +42,7 @@ function App() {
     []
   );
   const [reset, setReset] = useState(false);
-  
-
+  const [available, setAvailable] = useState(true);
 
   const stateChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -82,7 +79,13 @@ function App() {
     setTerms(terms);
   };
 
-  
+  const allowed = () => {
+    return setAvailable(true);
+  };
+
+  const notAllowed = () => {
+    return setAvailable(false);
+  };
 
   const appliedTermsRender = () => {
     const applied: (JSX.Element | undefined)[] = terms.map((term) => {
@@ -111,20 +114,19 @@ function App() {
         appliedTerms={appliedTerms}
         onReset={resetHandler}
         reset={reset}
+        available={available}
       />
 
-       
-        <CardsContainer
-          name={name}
-          select={{ type: type, option: option }}
-          terms={terms}
-          termsHandler={termsHandler}
-          render={appliedTermsRender}
-          reset={reset}
-          
-       
-        />
-      
+      <CardsContainer
+        name={name}
+        select={{ type: type, option: option }}
+        terms={terms}
+        termsHandler={termsHandler}
+        render={appliedTermsRender}
+        reset={reset}
+        allowed={allowed}
+        notAllowed={notAllowed}
+      />
     </Fragment>
   );
 }
