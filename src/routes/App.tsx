@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useState, ChangeEvent } from "react";
-import "./App.css";
-import Header from "./Components/Header";
-import SearchTerms from "./Components/SearchTerms";
-import CardsContainer from "./Components/CardsContainer";
-import Applied from "./Components/Applied";
+import "../App.css";
+import Header from "../Components/Header";
+import SearchTerms from "../Components/SearchTerms";
+import CardsContainer from "../Components/CardsContainer";
+import Applied from "../Components/Applied";
 
 interface Classification {
   type: string;
