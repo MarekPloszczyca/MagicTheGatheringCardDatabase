@@ -14,6 +14,7 @@ export default function CardPage() {
       <Link to={"/"}>
         <Header />
       </Link>
+      <div className={styles.cardContainer}>
       <Card image={card.imageUrl} single={true} />
       <CardDetails
         name={card.name}
@@ -25,7 +26,7 @@ export default function CardPage() {
         setName={card.setName}
         artist={card.artist}
         flavor={card.flavor}
-      />
+      /></div>
     </div>
   );
 }

@@ -38,7 +38,7 @@
       border-color: #10072b;
     }
     100% {
-      width: 20rem;
+      width: 25rem;
       border-color: #210f57;
     }
   }
@@ -48,5 +48,10 @@
 
   .singleCard img:hover {
     position: relative;
+  }
+}
+@media (min-width:1024px){
+  .singleCard img{
+ 
   }
 }

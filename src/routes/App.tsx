@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useState, ChangeEvent } from "react";
-import "../App.css";
+import "../App.scss";
 import Header from "../Components/Header";
 import SearchTerms from "../Components/SearchTerms";
 import CardsContainer from "../Components/CardsContainer";

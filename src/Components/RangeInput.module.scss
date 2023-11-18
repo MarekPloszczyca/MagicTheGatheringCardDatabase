@@ -32,15 +32,14 @@
   }
 }
 
-.rangeInput{
+.rangeInput {
   @extend %rangeInput;
 }
 
-.rangeInputNotAllowed{
+.rangeInputNotAllowed {
   @extend %rangeInput;
   cursor: not-allowed;
 }
-.notAllowed{
+.notAllowed {
   pointer-events: none;
 }
-
